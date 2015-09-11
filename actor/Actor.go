@@ -6,11 +6,11 @@ type Actor interface {
 
 // Characters, Elements, Weapons, etc...
 type RenderableActor interface {
-	Draw()
+	//	Draw()
 }
 
 type Player struct {
-	mesh Mesh
+	//	mesh Mesh
 }
 
 func (Player) Draw() {

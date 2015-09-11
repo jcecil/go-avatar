@@ -1,8 +1,8 @@
 package game
 
 import (
+	"fmt"
 	actor "github.com/jcecil/avatar/actor"
-	//	"fmt"
 )
 
 var (
@@ -13,6 +13,7 @@ var (
 
 func Initialize() {
 	//players = make(chan int, 10)
+	fmt.Println("Initializing game")
 }
 
 func TearDown() {
