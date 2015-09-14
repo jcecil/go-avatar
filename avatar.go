@@ -11,22 +11,21 @@ import (
 func main() {
 	fmt.Println("Avatar!")
 
+	go Loop()
+
+	graphics.Main()
+}
+
+func Loop() {
 	game.Initialize()
 	defer game.TearDown()
 
 	views.Initialize()
 	defer views.TearDown()
 
-	go Loop()
-
-	graphics.Main()
-
-}
-
-func Loop() {
 	exit := false
 	for !exit {
-		//exit = views.Loop()
+		exit = views.Loop()
 		//game.Loop()
 		time.Sleep(10 * time.Millisecond)
 	}

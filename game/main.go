@@ -6,13 +6,14 @@ import (
 )
 
 var (
-	Universe []*(actor.Actor)
+	Universe [](actor.RenderableActor)
 	Players  []*(actor.Player)
-	//players  chan int
+	players  chan int
 )
 
 func Initialize() {
-	//players = make(chan int, 10)
+	players = make(chan int, 10)
+	Universe = append(Universe, &actor.Cube{})
 	fmt.Println("Initializing game")
 }
 

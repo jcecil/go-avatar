@@ -1,12 +1,15 @@
 package actor
 
+import ()
+
 // All items in Avatar
 type Actor interface {
 }
 
 // Characters, Elements, Weapons, etc...
 type RenderableActor interface {
-	//	Draw()
+	Initialize()
+	Draw(uint32)
 }
 
 type Player struct {

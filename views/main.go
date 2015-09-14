@@ -2,24 +2,24 @@ package views
 
 import (
 	//	actor "bitbucket.org/jcecil/avatar/actor"
-	"fmt"
+	fmt "fmt"
 	//input "bitbucket.org/jcecil/avatar/input"
 	//views "bitbucket.org/jcecil/avatar/views"
 )
 
-//var (
-//	player PlayerView
-//)
+var (
+	player PlayerView
+)
 
 func Initialize() {
-	//	player.Initialize()
+	player.Initialize()
 	fmt.Println("Initializing views")
 }
 
 func TearDown() {
-	//	player.TearDown()
+	player.TearDown()
 }
 
-//func Loop() bool {
-//	return player.Loop()
-//}
+func Loop() bool {
+	return player.Loop()
+}

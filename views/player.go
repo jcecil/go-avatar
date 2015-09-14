@@ -1,43 +1,48 @@
 package views
 
-//import (
-//	opengl "github.com/jcecil/avatar/opengl"
-//	"fmt"
-//	glfw "github.com/go-gl/glfw3"
-//)
+import (
+	fmt "fmt"
+	glfw "github.com/go-gl/glfw3/v3.1/glfw"
+	graphics "github.com/jcecil/avatar/graphics"
+)
 
-//type PlayerView struct {
-//	id int
-//}
+var (
+	k *graphics.KeyButton
+	m *graphics.MouseButton
+	c *graphics.CursorPosition
+)
 
-//func (PlayerView) Initialize() {
-//}
+type PlayerView struct {
+	id int
+}
 
-//func (PlayerView) TearDown() {
-//}
+func (PlayerView) Initialize() {
+}
 
-//func (PlayerView) Loop() bool {
-//	return ReadInput()
-//}
+func (PlayerView) TearDown() {
+}
 
-//func ReadInput() bool {
-//	var k *opengl.KeyButton
-//	var m *opengl.MouseButton
-//	var c *opengl.CursorPosition
-//	select {
-//	case k = <-opengl.KeyInput:
-//		fmt.Println("Keyboard input", *k)
-//		switch glfw.Key((*k).Button) {
-//		case glfw.KeyEscape:
-//			fmt.Println("Escape key pressed. Goodbye!!")
-//			return true
-//		}
-//	case m = <-opengl.MouseInput:
-//		fmt.Println("Mouse input:", *m)
-//	case c = <-opengl.CursorInput:
-//		fmt.Println("Cursor movement:", *c)
-//	default:
-//
-//	}
-//	return false
-//}
+func (PlayerView) Loop() bool {
+	return ReadInput()
+}
+
+func ReadInput() bool {
+	select {
+	case k = <-graphics.KeyInput:
+		fmt.Println("Keyboard input", *k)
+
+		switch glfw.Key((*k).Button) {
+		case glfw.KeyEscape:
+			fmt.Println("Escape key pressed. Goodbye!!")
+			graphics.Window.SetShouldClose(true)
+			return true
+		}
+	case m = <-graphics.MouseInput:
+		fmt.Println("Mouse input:", *m)
+	case c = <-graphics.CursorInput:
+		fmt.Println("Cursor movement:", *c)
+	default:
+
+	}
+	return false
+}
