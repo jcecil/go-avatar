@@ -6,14 +6,8 @@ import (
 	glfw "github.com/go-gl/glfw3/v3.1/glfw"
 	mgl32 "github.com/go-gl/mathgl/mgl32"
 	game "github.com/jcecil/avatar/game"
-	//log "log"
-	errors "errors"
-	"image"
-	"image/draw"
-	_ "image/png"
-	os "os"
-	runtime "runtime"
-	strings "strings"
+	input "github.com/jcecil/avatar/input"
+	player "github.com/jcecil/avatar/player"
 )
 
 const (
@@ -25,14 +19,6 @@ const (
 var (
 	Window *glfw.Window
 )
-
-func init() {
-	runtime.LockOSThread()
-	KeyInput = make(chan *KeyButton, 100)
-	MouseInput = make(chan *MouseButton, 100)
-	CursorInput = make(chan *CursorPosition, 100)
-	//WindowConfigure = make(chan bool)
-}
 
 func Main() {
 	err := glfw.Init()
@@ -62,7 +48,7 @@ func Main() {
 	fmt.Println("OpenGL version", version)
 
 	// Configure the vertex and fragment shaders
-	program, err := newProgram(vertexShader, fragmentShader)
+	program, err := newProgram("SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader")
 	if err != nil {
 		panic(err)
 	}
@@ -92,9 +78,9 @@ func Main() {
 	angle := 0.0
 	previousTime := glfw.GetTime()
 
-	window.SetKeyCallback(onKey)
-	window.SetCursorPosCallback(onCursor)
-	window.SetMouseButtonCallback(onMouse)
+	window.SetKeyCallback(input.OnKey)
+	window.SetCursorPosCallback(input.OnCursor)
+	window.SetMouseButtonCallback(input.OnMouse)
 
 	for !window.ShouldClose() {
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
@@ -109,7 +95,8 @@ func Main() {
 
 		// Render
 		gl.UseProgram(program)
-		gl.UniformMatrix4fv(modelUniform, 1, false, &model[0])
+		// gl.UniformMatrix4fv(modelUniform, 1, false, &model[0])
+		player.MainPlayer.Draw(program)
 		for _, element := range game.Universe {
 			(element).Draw(program)
 		}
@@ -121,85 +108,5 @@ func Main() {
 }
 
 func CloseWindow() {
+	Window.SetShouldClose(true)
 }
-
-func newProgram(vertexShaderSource, fragmentShaderSource string) (uint32, error) {
-	vertexShader, err := compileShader(vertexShaderSource, gl.VERTEX_SHADER)
-	if err != nil {
-		return 0, err
-	}
-
-	fragmentShader, err := compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER)
-	if err != nil {
-		return 0, err
-	}
-
-	program := gl.CreateProgram()
-
-	gl.AttachShader(program, vertexShader)
-	gl.AttachShader(program, fragmentShader)
-	gl.LinkProgram(program)
-
-	var status int32
-	gl.GetProgramiv(program, gl.LINK_STATUS, &status)
-	if status == gl.FALSE {
-		var logLength int32
-		gl.GetProgramiv(program, gl.INFO_LOG_LENGTH, &logLength)
-
-		log := strings.Repeat("\x00", int(logLength+1))
-		gl.GetProgramInfoLog(program, logLength, nil, gl.Str(log))
-
-		return 0, errors.New(fmt.Sprintf("failed to link program: %v", log))
-	}
-
-	gl.DeleteShader(vertexShader)
-	gl.DeleteShader(fragmentShader)
-
-	return program, nil
-}
-
-func compileShader(source string, shaderType uint32) (uint32, error) {
-	shader := gl.CreateShader(shaderType)
-
-	csource := gl.Str(source)
-	gl.ShaderSource(shader, 1, &csource, nil)
-	gl.CompileShader(shader)
-
-	var status int32
-	gl.GetShaderiv(shader, gl.COMPILE_STATUS, &status)
-	if status == gl.FALSE {
-		var logLength int32
-		gl.GetShaderiv(shader, gl.INFO_LOG_LENGTH, &logLength)
-
-		log := strings.Repeat("\x00", int(logLength+1))
-		gl.GetShaderInfoLog(shader, logLength, nil, gl.Str(log))
-
-		return 0, fmt.Errorf("failed to compile %v: %v", source, log)
-	}
-
-	return shader, nil
-}
-
-var vertexShader string = `
-#version 330
-uniform mat4 projection;
-uniform mat4 camera;
-uniform mat4 model;
-in vec3 vert;
-in vec2 vertTexCoord;
-out vec2 fragTexCoord;
-void main() {
-    fragTexCoord = vertTexCoord;
-    gl_Position = projection * camera * model * vec4(vert, 1);
-}
-` + "\x00"
-
-var fragmentShader = `
-#version 330
-uniform sampler2D tex;
-in vec2 fragTexCoord;
-out vec4 outputColor;
-void main() {
-    outputColor = texture(tex, fragTexCoord);
-}
-` + "\x00"

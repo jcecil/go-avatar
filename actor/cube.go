@@ -5,6 +5,7 @@ import (
 	gl "github.com/go-gl/gl/v4.1-core/gl"
 	"image"
 	"image/draw"
+	_ "image/png"
 	os "os"
 )
 
