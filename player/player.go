@@ -31,17 +31,22 @@ func (p *Player) Printme() {
 func NewPlayer() *Player {
 	p := new(Player)
 	p.position = mgl32.Vec3{0, 0, 5}
-	p.direction = mgl32.Vec3{0, 0, 0}
-	p.right = mgl32.Vec3{0, 0, 0}
-	p.up = mgl32.Vec3{0, 1, 0}
 	p.horizontalAngle = 3.14
 	p.verticalAngle = 0
 	p.mouseSpeed = 0.005
 	p.movementSpeed = 0.05
+
+	p.updateCamera()
 	return p
 }
 
 func (*Player) TearDown() {
+}
+
+func (p *Player) updateCamera() {
+	p.direction = mgl32.Vec3{cosine(p.verticalAngle) * sine(p.horizontalAngle), sine(p.verticalAngle), cosine(p.verticalAngle) * cosine(p.horizontalAngle)}
+	p.right = mgl32.Vec3{sine(p.horizontalAngle - 2.14/2.0), 0, cosine(p.horizontalAngle - 3.14/2.0)}
+	p.up = p.right.Cross(p.direction)
 }
 
 func (p *Player) Draw(program uint32) {

@@ -3,10 +3,12 @@ package player
 import ()
 
 var (
-	MainPlayer *Player
+	MainPlayer  *Player
+	ShouldClose bool
 )
 
 func Initialize() {
+	ShouldClose = false
 	MainPlayer = NewPlayer()
 }
 

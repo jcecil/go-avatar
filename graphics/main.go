@@ -78,11 +78,13 @@ func Main() {
 	angle := 0.0
 	previousTime := glfw.GetTime()
 
+	width, height := window.GetSize()
+	window.SetCursorPos(float64(width/2), float64(height/2))
 	window.SetKeyCallback(input.OnKey)
 	window.SetCursorPosCallback(input.OnCursor)
 	window.SetMouseButtonCallback(input.OnMouse)
 
-	for !window.ShouldClose() {
+	for !player.ShouldClose {
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
 		// Update
