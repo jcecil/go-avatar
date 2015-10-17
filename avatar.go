@@ -5,7 +5,7 @@ import (
 	game "github.com/jcecil/avatar/game"
 	graphics "github.com/jcecil/avatar/graphics"
 	player "github.com/jcecil/avatar/player"
-	time "time"
+	//	time "time"
 )
 
 func main() {
@@ -27,6 +27,6 @@ func Loop() {
 	for !exit {
 		exit = player.Loop()
 		exit = exit || game.Loop()
-		time.Sleep(10 * time.Millisecond)
+		//time.Sleep(10 * time.Millisecond)
 	}
 }

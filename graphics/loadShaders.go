@@ -1,33 +1,13 @@
 package graphics
 
 import (
-	"bufio"
-	"bytes"
-	"fmt"
-	//	gl "github.com/go-gl/gl"
-	"os"
-	"os/exec"
+//	"bufio"
+//	"bytes"
+//	"fmt"
+//	gl "github.com/go-gl/gl"
+//	"os"
+//	"os/exec"
 )
-
-func readFile(filename string) string {
-	var fileText bytes.Buffer
-	fullname, _ := exec.LookPath("avatar")
-	fullname = fullname[:len(fullname)-6] + "/shaders/" + filename
-	fmt.Println(fullname)
-	file, _ := os.Open(fullname)
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fileText.WriteString(scanner.Text())
-		fileText.WriteString("\n")
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Println("Scanner error: ", err)
-	}
-
-	file.Close()
-	return fileText.String()
-}
 
 //func LoadShaders(vertexPath, fragmentPath string) gl.Program {
 // Create the shaders

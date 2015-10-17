@@ -1,16 +1,13 @@
 package player
 
-import (
-	fmt "fmt"
-)
+import ()
 
 var (
-	MainPlayer Player
+	MainPlayer *Player
 )
 
 func Initialize() {
-	MainPlayer.Initialize()
-	fmt.Println("Initializing player")
+	MainPlayer = NewPlayer()
 }
 
 func TearDown() {
