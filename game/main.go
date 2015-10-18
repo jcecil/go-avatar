@@ -3,11 +3,12 @@ package game
 import (
 	"fmt"
 	actor "github.com/jcecil/avatar/actor"
+	player "github.com/jcecil/avatar/player"
 )
 
 var (
 	Universe [](actor.RenderableActor)
-	Players  []*(actor.Player)
+	Players  []*(player.Player)
 	players  chan int
 )
 
@@ -28,6 +29,6 @@ func Loop() bool {
 }
 
 func AddPPlayer() {
-	p := actor.Player{}
+	p := player.NewPlayer()
 	Players = append(Players, &p)
 }

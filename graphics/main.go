@@ -6,6 +6,7 @@ import (
 	glfw "github.com/go-gl/glfw3/v3.1/glfw"
 	mgl32 "github.com/go-gl/mathgl/mgl32"
 	game "github.com/jcecil/avatar/game"
+	meshes "github.com/jcecil/avatar/graphics/meshes"
 	input "github.com/jcecil/avatar/input"
 	player "github.com/jcecil/avatar/player"
 )
@@ -83,6 +84,8 @@ func Main() {
 	window.SetKeyCallback(input.OnKey)
 	window.SetCursorPosCallback(input.OnCursor)
 	window.SetMouseButtonCallback(input.OnMouse)
+
+	meshes.LoadColladaCube("cube.dae")
 
 	for !player.ShouldClose {
 		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
